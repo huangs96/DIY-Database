@@ -7,19 +7,23 @@ const getToken = (data) => {
   console.log(tokens);
   
   if (!tokens[tokens.length-1].includes(']')) {
-    console.log('Wrong syntax, please follow "Method folder [key]" format.')
-  }
+    console.log('Wrong syntax, please follow "method folder [key]" format.');
+  } else {
+    let removeFirstBracket = tokens[tokens.length-1].replace('[', '');
+    let removeSecondBracket = removeFirstBracket.replace(']', '');
+    tokens[tokens.length-1] = removeSecondBracket;
+  };
+
+  return tokens;
+
 }
 
 function getData(key) {
-  let splitBrackets = key.split('[').join('');
-  let finalKey = splitBrackets.split(']').join('');
-  console.log('finalKey', finalKey);
-  return fs.readFile(`./data/${finalKey}`)
+  return fs.readFileSync(`./data/${key}`);
 }
 
 function setData(key) {
-  fs.writeFileSync(`./data/[${key}]`, payload);
+  fs.writeFileSync(`./data/${key}`, payload);
   return `SET ${key}`;
 }
 
@@ -33,12 +37,13 @@ const server = net.createServer((sock) => {
     console.log('token---', tokens);
 
     if (tokens[0] === 'GET') {
-      sock.write(getData(tokens[1]));
+      console.log((getData(tokens[1]).toString('utf8')));
     } else if (tokens[0] === 'SET') {
       sock.write(setData(tokens[2]));
     } else {
-      console.log('No Command');
+      console.log('No Command, check syntax "method folder [key]"');
     }
+
 
 
   });
