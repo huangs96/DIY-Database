@@ -1,0 +1,8 @@
+person {
+  name: Serena,
+  ethnicity: Chinese,
+  hobbies: {
+    sport: swimming,
+    games: Stephen
+  }
+}

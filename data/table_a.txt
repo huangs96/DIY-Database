@@ -1,0 +1,8 @@
+person {
+  name: Stephen,
+  ethnicity: Chinese,
+  hobbies: {
+    sport: basketball,
+    games: valorant
+  }
+}{"name":"Janice","ethnicity":"Chinese","hobbies":{"sport":"Basketball","games":"Valorant"}}{"name":"Jim","ethnicity":"Caucasian","hobbies":{"sport":"Golf","games":"Poker"}}{"name":"","hobbies":{}}
