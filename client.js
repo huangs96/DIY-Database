@@ -8,7 +8,7 @@ client.connect(8124, '127.0.0.1', function() {
     console.log('myArgs----', myArgs);
 
   // client.write('GET [key]')
-  client.write('GET data [table_a]') 
+  client.write('GET data [table_a]');
   // client.write('GET test' + '[' + myArgs + ']');
   // client.write('SET test' + '[' + myArgs + ']');
   // client.write(`${myArgs}`);
