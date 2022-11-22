@@ -18,12 +18,23 @@ const getToken = (data) => {
 
 }
 
+//get all data pertaining to key file path
 function getData(key) {
   return fs.readFileSync(`./data/${key}`);
-}
+};
 
-function setData(key) {
-  fs.writeFileSync(`./data/${key}`, payload);
+//set payload into key file path
+function setData(key, payload) {
+  let path = `./data/${key}`;
+  if (fs.existsSync(path)) {
+    fs.appendFile(path, payload, function(err){
+      if (err) throw err;
+      console.log('Saved Data');
+    });
+  } else {
+    fs.writeFileSync(`./data/${key}`, payload);
+    console.log('File created, saved data');
+  }
   return `SET ${key}`;
 }
 
@@ -37,9 +48,12 @@ const server = net.createServer((sock) => {
     console.log('token---', tokens);
 
     if (tokens[0] === 'GET') {
+      console.log(tokens[0]);
       console.log((getData(tokens[1]).toString('utf8')));
+      sock.write(getData(tokens[1]));
     } else if (tokens[0] === 'SET') {
-      sock.write(setData(tokens[2]));
+      console.log(tokens[0]);
+      sock.write(setData(tokens[1], tokens[2]));
     } else {
       console.log('No Command, check syntax "method folder [key]"');
     }
