@@ -28,7 +28,7 @@ const getToken = (data) => {
   }
 
   return tokens;
-}
+};
 
 //get all data pertaining to key file path
 function getData(key) {
