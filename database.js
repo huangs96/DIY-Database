@@ -61,22 +61,22 @@ const server = net.createServer((sock) => {
   sock.on('data', function(data) {
     
     const tokens = (getToken(data));
-    
-    sock.write('hi');
 
-    if (tokens[0] === 'GET') {
-      //if data type is undefined, return after console log msg
-      if (getData(tokens) === undefined) {
-        return;
-      };
-      console.log(getData(tokens[1]));
-      sock.write(getData(tokens[1]));
-      console.log('Data Sent');
-    } else if (tokens[0] === 'SET') {
-      sock.write(setData(tokens[1], tokens[2]));
-    } else {
-      sock.write('No Command, check syntax "method folder [key]"');
-    }
+    setTimeout(()=>{
+      if (tokens[0] === 'GET') {
+        //if data type is undefined, return after console log msg
+        if (getData(tokens) === undefined) {
+          return;
+        };
+        console.log(getData(tokens[1]));
+        sock.write(getData(tokens[1]));
+        console.log('Data Sent');
+      } else if (tokens[0] === 'SET') {
+        sock.write(setData(tokens[1], tokens[2]));
+      } else {
+        sock.write('No Command, check syntax "method folder [key]"');
+      }
+    }, 2000)
 
   });
 });
