@@ -9,11 +9,11 @@ node client.js
 ``` 
 3. Enter data in structural syntax in command line under client.js terminal tab to perform actions to database.
 
-# Prerequistites #
+## Prerequistites ##
 All you need is NodeJS to run the DIY Database.
 
-# Installing #
+## Installing ##
 Download your corresponding NodeJS version here: https://nodejs.org/en/
 
-# Built With #
+## Built With ##
 The DIY-Datavase is only built with NodeJS.
