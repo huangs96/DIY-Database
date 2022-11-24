@@ -1,7 +1,11 @@
 // const myArgs = require('./entries');
 const net = require('net');
+const readline = require('readline');
 const myArgs = process.argv.slice(2);
 
+const input = readline.createInterface(
+  
+)
 
 var client = new net.Socket();
 client.connect(8124, '127.0.0.1', function() {
