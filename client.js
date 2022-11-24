@@ -22,11 +22,12 @@ client.connect(8124, '127.0.0.1', function() {
       dataEntry = data;
       client.write(dataEntry);
     } else if (data.includes('SET')) {
-      console.log(`Data received by users: ${data} `);
+      console.log(`Data received by database: ${data} `);
       dataEntry = data;
+      console.log(dataEntry);
       client.write(dataEntry);
     } else {
-      console.log('Incorrect Syntax - please use: "method file [data]"')
+      console.log('Incorrect Syntax - please use: "method folder [key]"')
     }
     input.close();
   });

@@ -3,24 +3,41 @@ const fs = require('fs');
 
 const getToken = (data) => {
   
-  let tokens = data.split(' ');
-  console.log(tokens);
-  
-  if (!tokens[tokens.length-1].includes(']')) {
-    console.log('Wrong syntax, please follow "method folder [key]" format.');
-  } else {
-    let removeFirstBracket = tokens[tokens.length-1].replace('[', '');
-    let removeSecondBracket = removeFirstBracket.replace(']', '');
-    tokens[tokens.length-1] = removeSecondBracket;
-  };
+  console.log(data);
+  const tokens = [];
+  let curr = 0;
+  let isData = false;
+
+  for (let i of data) {
+    //beginning of data entry
+    if (i === '[') {
+      isData = true;
+    //end of data entry
+    } else if ( i === ']') {
+      isData = false;
+    //add characters one by one into tokens array
+    } else if (i === ' ') {
+      if (isData) {
+        tokens[curr] = ((tokens[curr] || '') + i)
+      } else if (tokens[curr]) {
+        curr += 1;
+      }
+    } else {
+      tokens[curr] = ((tokens[curr] || '') + i);
+    }
+  }
 
   return tokens;
-
 }
 
 //get all data pertaining to key file path
 function getData(key) {
-  return fs.readFileSync(`./data/${key}`);
+  let path = `./data/${key}`;
+  if (!fs.existsSync(path)) {
+    console.log('Use SET method to create and set data');
+  } else {
+    return fs.readFileSync(path).toString('utf-8');
+  };
 };
 
 //set payload into key file path
@@ -32,7 +49,7 @@ function setData(key, payload) {
       console.log('Saved Data');
     });
   } else {
-    fs.writeFileSync(`./data/${key}`, payload);
+    fs.writeFileSync(path, payload);
     console.log('File created, saved data');
   }
   return `SET ${key}`;
@@ -43,22 +60,23 @@ const server = net.createServer((sock) => {
   // 'connection' listener.
   sock.setEncoding("utf8"); //set data encoding (either 'ascii', 'utf8', or 'base64')
   sock.on('data', function(data) {
-    console.log('data---', data);
+    
     const tokens = (getToken(data));
     console.log('token---', tokens);
 
     if (tokens[0] === 'GET') {
-      console.log(tokens[0]);
-      console.log((getData(tokens[1]).toString('utf8')));
+      //if data type is undefined, return after console log msg
+      if (getData(tokens) === undefined) {
+        return;
+      };
+      console.log(getData(tokens[1]));
       sock.write(getData(tokens[1]));
+      console.log('Data Sent');
     } else if (tokens[0] === 'SET') {
-      console.log(tokens[0]);
       sock.write(setData(tokens[1], tokens[2]));
     } else {
       console.log('No Command, check syntax "method folder [key]"');
     }
-
-
 
   });
 });
