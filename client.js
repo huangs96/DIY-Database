@@ -1,24 +1,38 @@
 // const myArgs = require('./entries');
 const net = require('net');
 const readline = require('readline');
-const myArgs = process.argv.slice(2);
-
-const input = readline.createInterface(
-  
-)
 
 var client = new net.Socket();
 client.connect(8124, '127.0.0.1', function() {
   console.log('Connected');
-  console.log('myArgs----', myArgs);
 
-  client.write('GET table_a.txt [hi]');
-  client.write('SET table_a.txt [heyyy]');
-  // client.write(`${myArgs}`);
+  //store entries
+  let dataEntry = '';
+
+  //input for adding data into database
+  const input = readline.createInterface(
+    process.stdin, process.stdout
+  );
+  
+  input.setPrompt(`Action from Database: `);
+  input.prompt();
+  input.on('line', (data) => {
+    if (data.includes('GET')) {
+      console.log(`Retrieving data: ${data} `);
+      dataEntry = data;
+      client.write(dataEntry);
+    } else if (data.includes('SET')) {
+      console.log(`Data received by users: ${data} `);
+      dataEntry = data;
+      client.write(dataEntry);
+    } else {
+      console.log('Incorrect Syntax - please use: "method file [data]"')
+    }
+    input.close();
+  });
+
 });
 
 client.on('data', function(data){
   client.destroy();
-})
-
-module.exports = myArgs;
+});
