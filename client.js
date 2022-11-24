@@ -3,6 +3,7 @@ const net = require('net');
 const readline = require('readline');
 
 var client = new net.Socket();
+client.setEncoding("utf8");
 client.connect(8124, '127.0.0.1', function() {
   console.log('Connected');
 
@@ -14,25 +15,16 @@ client.connect(8124, '127.0.0.1', function() {
     process.stdin, process.stdout
   );
   
-  input.setPrompt(`Action from Database: `);
+  input.setPrompt(`> `);
   input.prompt();
   input.on('line', (data) => {
-    if (data.includes('GET')) {
-      console.log(`Retrieving data: ${data} `);
-      dataEntry = data;
-      client.write(dataEntry);
-    } else if (data.includes('SET')) {
-      console.log(`Data received by database: ${data} `);
-      dataEntry = data;
-      client.write(dataEntry);
-    } else {
-      console.log('Incorrect Syntax - please use: "method folder [key]"')
-    }
-    input.close();
+    client.write(data);
+    // input.close();
   });
 
 });
 
 client.on('data', function(data){
-  client.destroy();
+  console.log(data);
+  // client.destroy();
 });

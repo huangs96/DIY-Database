@@ -61,6 +61,8 @@ const server = net.createServer((sock) => {
   sock.on('data', function(data) {
     
     const tokens = (getToken(data));
+    
+    sock.write('hi');
 
     if (tokens[0] === 'GET') {
       //if data type is undefined, return after console log msg
@@ -73,7 +75,7 @@ const server = net.createServer((sock) => {
     } else if (tokens[0] === 'SET') {
       sock.write(setData(tokens[1], tokens[2]));
     } else {
-      console.log('No Command, check syntax "method folder [key]"');
+      sock.write('No Command, check syntax "method folder [key]"');
     }
 
   });
