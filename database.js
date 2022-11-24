@@ -2,8 +2,7 @@ const net = require('net');
 const fs = require('fs');
 
 const getToken = (data) => {
-  
-  console.log(data);
+
   const tokens = [];
   let curr = 0;
   let isData = false;
@@ -62,7 +61,6 @@ const server = net.createServer((sock) => {
   sock.on('data', function(data) {
     
     const tokens = (getToken(data));
-    console.log('token---', tokens);
 
     if (tokens[0] === 'GET') {
       //if data type is undefined, return after console log msg
