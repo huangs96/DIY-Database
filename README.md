@@ -7,7 +7,7 @@ The DIY-Database is a project created to understand how files and database synta
 node database.js
 node client.js
 ``` 
-3. Enter data in structural syntax in command line under client.js terminal tab to perform actions to database.
+3. Enter data in structural syntax (method file key [data]) in command line under client.js terminal tab to perform actions to database.
 
 ## Prerequistites ##
 All you need is NodeJS to run the DIY Database.

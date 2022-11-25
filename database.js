@@ -65,14 +65,14 @@ const getToken = (data) => {
       tokens[curr] = ((tokens[curr] || '') + i);
     }
   }
-
   return tokens;
 };
 
 //get all data pertaining to key file path
-function getData(key) {
+function getData(file, key) {
   //make path more dynamic
-  let path = `./data/${key}`;
+  let path = `./${file}/${key}`;
+  console.log(path);
   if (!fs.existsSync(path)) {
     return 'Use SET method to create and set data';
   } else {
@@ -81,8 +81,8 @@ function getData(key) {
 };
 
 //set payload into key file path
-function setData(key, payload) {
-  let path = `./data/${key}`;
+function setData(file, key, payload) {
+  let path = `./${file}/${key}`;
   if (fs.existsSync(path)) {
     fs.appendFile(path, payload, function(err){
       if (err) throw err;
@@ -100,12 +100,12 @@ const server = new Server(async (sock) => {
   const data = await sock.onData();
   const tokens = getToken(data);
   if (tokens[0] === 'GET') {
-    sock.write(getData(tokens[1]));
+    sock.write(getData(tokens[1], tokens[2]));
     console.log('Data Sent');
   } else if (tokens[0] === 'SET') {
-    sock.write(setData(tokens[1], tokens[2]));
+    sock.write(setData(tokens[1], tokens[2], tokens[3]));
   } else {
-    sock.write('No Command, check syntax "method folder [key]"');
+    sock.write('No Command, check syntax "method folder key [data]"');
   }
 });
 
