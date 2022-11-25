@@ -1,5 +1,5 @@
 # Getting Start #
-The DIY-Database is a project created to understand how files and database syntax inherently work and behave in its TCP form. The DIY-Database is built with only NodeJS and is scalable. Methods can be created to perform desired actions to the database files with NodeJS.
+The DIY-Database is a project created to understand how files and database syntax inherently work and behave in its TCP form. The DIY-Database is built with only NodeJS and is scalable. Methods can be created to perform desired actions to the database files with NodeJS. The DIY-Database uses async/await and promises to handle asynchronous requests from multiple clients.
 
 1. Fork DIY-Database repo.
 2. Run the following in two different terminal tabs:
