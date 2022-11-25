@@ -17,8 +17,12 @@ class Client {
 
   write(data) {
     return new Promise((resolve, reject) => {
-      this.sock.write(data)
-      this.sock.on('data', resolve);
+      this.sock.write(data);
+      const cb = res => resolve([res, cb]);
+      this.sock.on('data', cb);
+    }).then(([res, cb]) => {
+      this.sock.removeListener('data', cb);
+      return res;
     })
   }
 };
