@@ -1,13 +1,11 @@
 const net = require('net');
 const fs = require('fs');
 
-//make sure data folder exists
-
 class Socket {
   constructor(sock) {
     sock.setEncoding('utf-8');
     this.sock = sock;
-  }
+  };
 
   onData() {
     return new Promise((resolve, reject) => {
@@ -16,30 +14,28 @@ class Socket {
     }).then(([res, cb]) => {
       this.sock.removeListener('data', cb);
       return res;
-    })
-  }
+    });
+  };
 
   write(data) {
     this.sock.write(data)
-  }
-}
+  };
+};
 
 class Server {
   constructor(cb) {
-    //take sock as perimeter to modify it and work with it
     this.server = net.createServer(async (sock) => {
       const socket = new Socket(sock);
-      //cb takes socket as a parameter, in addition to createServer(cb)
       while (true) {
         await cb(socket);
-      }
-    })
-  }
-
+      };
+    });
+  };
+  
   listen(port, cb) {
     return this.server.listen(port, cb); 
-  }
-}
+  };
+};
 
 const getToken = (data) => {
 
@@ -48,29 +44,24 @@ const getToken = (data) => {
   let isData = false;
 
   for (let i of data) {
-    //beginning of data entry
     if (i === '[') {
       isData = true;
-    //end of data entry
     } else if ( i === ']') {
       isData = false;
-    //add characters one by one into tokens array
     } else if (i === ' ') {
       if (isData) {
         tokens[curr] = ((tokens[curr] || '') + i)
       } else if (tokens[curr]) {
         curr += 1;
-      }
+      };
     } else {
       tokens[curr] = ((tokens[curr] || '') + i);
-    }
-  }
+    };
+  };
   return tokens;
 };
 
-//get all data pertaining to key file path
 function getData(file, key) {
-  //make path more dynamic
   let path = `./${file}/${key}`;
   console.log(path);
   if (!fs.existsSync(path)) {
@@ -80,7 +71,6 @@ function getData(file, key) {
   };
 };
 
-//set payload into key file path
 function setData(file, key, payload) {
   let path = `./${file}/${key}`;
   if (fs.existsSync(path)) {
@@ -91,12 +81,11 @@ function setData(file, key, payload) {
   } else {
     fs.writeFileSync(path, payload);
     console.log('File created, saved data');
-  }
+  };
   return `SET ${key}`;
 };
 
 const server = new Server(async (sock) => {
-  //just this connection sits and wait for data to come in, to enable multi-connection
   const data = await sock.onData();
   const tokens = getToken(data);
   if (tokens[0] === 'GET') {
@@ -106,7 +95,7 @@ const server = new Server(async (sock) => {
     sock.write(setData(tokens[1], tokens[2], tokens[3]));
   } else {
     sock.write('No Command, check syntax "method folder key [data]"');
-  }
+  };
 });
 
 server.listen(8124, () => {
