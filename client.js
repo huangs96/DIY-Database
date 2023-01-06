@@ -1,4 +1,3 @@
-// const myArgs = require('./entries');
 const net = require('net');
 const readline = require('readline');
 
@@ -57,60 +56,3 @@ const main = async () => {
 }
 
 main();
-
-//Pre-refactor code
-
-// var client = new net.Socket();
-// client.setEncoding("utf8");
-// client.connect(8124, '127.0.0.1', function() {
-//   console.log('Connected');
-
-//   //store entries
-//   let dataEntry = '';
-
-//   //input for adding data into database
-//   const input = readline.createInterface(
-//     process.stdin, process.stdout
-//   );
-  
-//   input.setPrompt(`> `);
-//   input.prompt();
-//   input.on('line', (data) => {
-//     input.prompt();
-//     client.write(data);
-//     // input.close();
-//   });
-
-// });
-
-
-// client.on('data', function(data){
-//   console.log(data);
-//   // client.destroy();
-// });
-
-// const input = readline.createInterface(
-//   process.stdin, process.stdout
-// );
-
-// input.setPrompt(`> `);
-// input.prompt();
-
-// input.on('line', (data) => {
-//   input.close();
-//   var client = new net.Socket();
-//   client.setEncoding("utf8");
-//   client.connect(8124, '127.0.0.1', function() {
-//     console.log('Connected');
-//     client.write(data);
-//   });
-
-//   input.prompt();
-
-//   //receiving data from database
-//   client.on('data', function(data){
-//     console.log(data);
-//     client.destroy();
-//   });
-  
-// });
